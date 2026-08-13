@@ -1,0 +1,31 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: gym-booking-backend
+  datasource:
+    url: jdbc:h2:file:./data/gymbooking;AUTO_SERVER=TRUE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: ""
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+app:
+  jwt:
+    secret: "c3ByaW5nLWJvb3QtZ3ltLWJvb2tpbmctc3lzdGVtLWlUMzU1LXByb2pla3RuaS16YWRhdGFrLXNlY3JldC1rZXk="
+    expiration-ms: 86400000
+
+logging:
+  level:
+    com.metropolitan.gymbooking: INFO
