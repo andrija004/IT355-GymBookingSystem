@@ -17,6 +17,7 @@ frontend/.env.local
 *.iml
 .vscode/
 .DS_Store
+.claude/
 
 ## OS
 Thumbs.db
