@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -73,12 +74,11 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/h2-console/**").permitAll()
-                        .requestMatchers("GET", "/api/termini/**").authenticated()
-                        .requestMatchers("GET", "/api/treninzi/**", "/api/treneri/**").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/api/termini/**", "/api/treninzi/**", "/api/treneri/**").authenticated()
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                        .requestMatchers("POST", "/api/treninzi/**", "/api/treneri/**", "/api/termini/**").hasRole("ADMIN")
-                        .requestMatchers("PUT", "/api/treninzi/**", "/api/treneri/**", "/api/termini/**").hasRole("ADMIN")
-                        .requestMatchers("DELETE", "/api/treninzi/**", "/api/treneri/**", "/api/termini/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/api/treninzi/**", "/api/treneri/**", "/api/termini/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/api/treninzi/**", "/api/treneri/**", "/api/termini/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/api/treninzi/**", "/api/treneri/**", "/api/termini/**").hasRole("ADMIN")
                         .anyRequest().authenticated())
                 .headers(headers -> headers.frameOptions(frame -> frame.sameOrigin()))
                 .authenticationProvider(authenticationProvider())
