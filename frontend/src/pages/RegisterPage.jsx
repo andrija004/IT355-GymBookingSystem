@@ -30,6 +30,7 @@ export function RegisterPage() {
   return (
     <div className="auth-container">
       <form className="auth-form" onSubmit={handleSubmit}>
+        <div className="auth-icon">💪</div>
         <h2>Registracija</h2>
         {greska && <div className="alert-error">{greska}</div>}
         <label>

@@ -49,7 +49,18 @@ export function TerminiPage() {
     }
   }
 
-  if (ucitavanje) return <div className="container">Učitavanje termina...</div>;
+  if (ucitavanje)
+    return (
+      <>
+        <div className="hero">
+          <div className="hero-inner">
+            <p className="hero-eyebrow">Pulse Teretana</p>
+            <h2>Slobodni termini</h2>
+          </div>
+        </div>
+        <div className="container">Učitavanje termina...</div>
+      </>
+    );
 
   const pojamZaPretragu = pretraga.trim().toLowerCase();
   const filtriraniTermini = termini.filter((termin) => {
@@ -60,8 +71,15 @@ export function TerminiPage() {
   });
 
   return (
-    <div className="container">
-      <h2>Slobodni termini</h2>
+    <>
+      <div className="hero">
+        <div className="hero-inner">
+          <p className="hero-eyebrow">Pulse Teretana</p>
+          <h2>Rezerviši svoj termin</h2>
+          <p>Izaberi trening, prati slobodna mesta uživo i zakaži svoje mesto u sali za par klikova.</p>
+        </div>
+      </div>
+      <div className="container">
       {poruka && <div className={`alert-${poruka.tip}`}>{poruka.tekst}</div>}
 
       <div className="inline-form">
@@ -70,7 +88,7 @@ export function TerminiPage() {
           value={pretraga}
           onChange={(e) => setPretraga(e.target.value)}
         />
-        <label style={{ display: "flex", alignItems: "center", gap: "0.4rem", fontSize: "0.9rem" }}>
+        <label className="checkbox-label">
           <input
             type="checkbox"
             checked={samoSlobodni}
@@ -109,6 +127,7 @@ export function TerminiPage() {
           </div>
         ))}
       </div>
-    </div>
+      </div>
+    </>
   );
 }

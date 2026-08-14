@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 export function Navbar() {
@@ -10,21 +10,26 @@ export function Navbar() {
     navigate("/prijava");
   }
 
+  const inicijali = korisnik ? `${korisnik.ime?.[0] || ""}${korisnik.prezime?.[0] || ""}`.toUpperCase() : "";
+
   return (
     <nav className="navbar">
       <div className="navbar-brand">
-        <Link to="/termini">🏋 Teretana</Link>
+        <NavLink to="/termini">
+          <span className="brand-badge">🏋</span>
+          PULSE TERETANA
+        </NavLink>
       </div>
       <div className="navbar-links">
         {korisnik && (
           <>
-            <Link to="/termini">Termini</Link>
-            <Link to="/moje-rezervacije">Moje rezervacije</Link>
+            <NavLink to="/termini">Termini</NavLink>
+            <NavLink to="/moje-rezervacije">Moje rezervacije</NavLink>
             {isAdmin && (
               <>
-                <Link to="/admin/treneri">Treneri</Link>
-                <Link to="/admin/treninzi">Treninzi</Link>
-                <Link to="/admin/termini">Upravljanje terminima</Link>
+                <NavLink to="/admin/treneri">Treneri</NavLink>
+                <NavLink to="/admin/treninzi">Treninzi</NavLink>
+                <NavLink to="/admin/termini">Upravljanje terminima</NavLink>
               </>
             )}
           </>
@@ -33,15 +38,19 @@ export function Navbar() {
       <div className="navbar-user">
         {korisnik ? (
           <>
-            <span>
-              {korisnik.ime} {korisnik.prezime} ({korisnik.uloga})
-            </span>
+            <div className="navbar-user-info">
+              <span className="navbar-avatar">{inicijali}</span>
+              <span>
+                {korisnik.ime} {korisnik.prezime}
+              </span>
+              <span className="navbar-role">{isAdmin ? "Admin" : "Korisnik"}</span>
+            </div>
             <button onClick={handleLogout}>Odjava</button>
           </>
         ) : (
           <>
-            <Link to="/prijava">Prijava</Link>
-            <Link to="/registracija">Registracija</Link>
+            <NavLink to="/prijava">Prijava</NavLink>
+            <NavLink to="/registracija">Registracija</NavLink>
           </>
         )}
       </div>
