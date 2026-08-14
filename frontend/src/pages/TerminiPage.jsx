@@ -17,6 +17,8 @@ export function TerminiPage() {
   const [termini, setTermini] = useState([]);
   const [ucitavanje, setUcitavanje] = useState(true);
   const [poruka, setPoruka] = useState(null);
+  const [pretraga, setPretraga] = useState("");
+  const [samoSlobodni, setSamoSlobodni] = useState(false);
 
   async function ucitajTermine() {
     setUcitavanje(true);
@@ -49,13 +51,38 @@ export function TerminiPage() {
 
   if (ucitavanje) return <div className="container">Učitavanje termina...</div>;
 
+  const pojamZaPretragu = pretraga.trim().toLowerCase();
+  const filtriraniTermini = termini.filter((termin) => {
+    if (samoSlobodni && termin.slobodnaMesta <= 0) return false;
+    if (!pojamZaPretragu) return true;
+    const tekst = `${termin.trening.naziv} ${termin.trener.ime} ${termin.trener.prezime}`.toLowerCase();
+    return tekst.includes(pojamZaPretragu);
+  });
+
   return (
     <div className="container">
       <h2>Slobodni termini</h2>
       {poruka && <div className={`alert-${poruka.tip}`}>{poruka.tekst}</div>}
+
+      <div className="inline-form">
+        <input
+          placeholder="Pretraga po treningu ili treneru..."
+          value={pretraga}
+          onChange={(e) => setPretraga(e.target.value)}
+        />
+        <label style={{ display: "flex", alignItems: "center", gap: "0.4rem", fontSize: "0.9rem" }}>
+          <input
+            type="checkbox"
+            checked={samoSlobodni}
+            onChange={(e) => setSamoSlobodni(e.target.checked)}
+          />
+          Samo termini sa slobodnim mestima
+        </label>
+      </div>
+
       <div className="card-grid">
-        {termini.length === 0 && <p>Trenutno nema zakazanih termina.</p>}
-        {termini.map((termin) => (
+        {filtriraniTermini.length === 0 && <p>Nema termina koji odgovaraju pretrazi.</p>}
+        {filtriraniTermini.map((termin) => (
           <div className="card" key={termin.id}>
             <h3>{termin.trening.naziv}</h3>
             <p className="muted">{termin.trening.opis}</p>
