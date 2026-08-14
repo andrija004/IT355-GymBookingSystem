@@ -11,4 +11,8 @@ public interface TerminRepository extends JpaRepository<Termin, Long> {
     List<Termin> findByDatumVremeAfterOrderByDatumVremeAsc(LocalDateTime from);
 
     List<Termin> findAllByOrderByDatumVremeAsc();
+
+    boolean existsByTrenerId(Long trenerId);
+
+    boolean existsByTreningId(Long treningId);
 }

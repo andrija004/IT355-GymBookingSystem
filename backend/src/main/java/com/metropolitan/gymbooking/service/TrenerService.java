@@ -2,7 +2,9 @@ package com.metropolitan.gymbooking.service;
 
 import com.metropolitan.gymbooking.dto.TrenerDto;
 import com.metropolitan.gymbooking.entity.Trener;
+import com.metropolitan.gymbooking.exception.BadRequestException;
 import com.metropolitan.gymbooking.exception.ResourceNotFoundException;
+import com.metropolitan.gymbooking.repository.TerminRepository;
 import com.metropolitan.gymbooking.repository.TrenerRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,9 +15,11 @@ import java.util.List;
 public class TrenerService {
 
     private final TrenerRepository trenerRepository;
+    private final TerminRepository terminRepository;
 
-    public TrenerService(TrenerRepository trenerRepository) {
+    public TrenerService(TrenerRepository trenerRepository, TerminRepository terminRepository) {
         this.trenerRepository = trenerRepository;
+        this.terminRepository = terminRepository;
     }
 
     public List<TrenerDto> findAll() {
@@ -45,6 +49,10 @@ public class TrenerService {
     @Transactional
     public void delete(Long id) {
         Trener trener = getTrenerOrThrow(id);
+        if (terminRepository.existsByTrenerId(id)) {
+            throw new BadRequestException(
+                    "Trener se ne može obrisati jer ima zakazane termine. Prvo uklonite ili preraspodelite termine.");
+        }
         trenerRepository.delete(trener);
     }
 
